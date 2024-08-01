@@ -1,0 +1,2316 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>customer_segmentation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="Customer_segmentation_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Customer_segmentation_files/libs/quarto-html/quarto.js"></script>
+<script src="Customer_segmentation_files/libs/quarto-html/popper.min.js"></script>
+<script src="Customer_segmentation_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Customer_segmentation_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Customer_segmentation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Customer_segmentation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Customer_segmentation_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Customer_segmentation_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Customer_segmentation_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="customer-segmentation-with-python" class="level1">
+<h1>Customer Segmentation with Python</h1>
+<section id="understand-the-problem-and-business-case" class="level2">
+<h2 class="anchored" data-anchor-id="understand-the-problem-and-business-case">1. Understand the problem and Business Case</h2>
+<p>In this project, we are provided with a dataset containing customer information from a bank over the past six months. The data includes variables such as transaction frequency, transaction amounts, tenure, and other relevant features.</p>
+<p>As data scientists, our task is to utilize artificial intelligence and machine learning techniques to classify customers into at least three distinct groups. The marketing team will use the results of this classification to optimize their marketing campaigns and strategies.</p>
+</section>
+<section id="import-libraries-load-data" class="level2">
+<h2 class="anchored" data-anchor-id="import-libraries-load-data">2. Import libraries &amp; Load data</h2>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data Manipulation</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Data Visualization</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Machine Learning</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler, normalize</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> silhouette_score</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Other useful libraries</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">"ignore"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># For additional visualization (optional)</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objs <span class="im">as</span> go</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># For display text as Markdown</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display, Markdown</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># from jupyterthemes import jtplot</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># jtplot.style(theme = 'monokai', context = 'notebook', ticks = True, grid=False )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="st">"marketing_data.csv"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>CUST_ID</th>
+      <th>BALANCE</th>
+      <th>BALANCE_FREQUENCY</th>
+      <th>PURCHASES</th>
+      <th>ONEOFF_PURCHASES</th>
+      <th>INSTALLMENTS_PURCHASES</th>
+      <th>CASH_ADVANCE</th>
+      <th>PURCHASES_FREQUENCY</th>
+      <th>ONEOFF_PURCHASES_FREQUENCY</th>
+      <th>PURCHASES_INSTALLMENTS_FREQUENCY</th>
+      <th>CASH_ADVANCE_FREQUENCY</th>
+      <th>CASH_ADVANCE_TRX</th>
+      <th>PURCHASES_TRX</th>
+      <th>CREDIT_LIMIT</th>
+      <th>PAYMENTS</th>
+      <th>MINIMUM_PAYMENTS</th>
+      <th>PRC_FULL_PAYMENT</th>
+      <th>TENURE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>C10001</td>
+      <td>40.900749</td>
+      <td>0.818182</td>
+      <td>95.40</td>
+      <td>0.00</td>
+      <td>95.40</td>
+      <td>0.000000</td>
+      <td>0.166667</td>
+      <td>0.000000</td>
+      <td>0.083333</td>
+      <td>0.000000</td>
+      <td>0</td>
+      <td>2</td>
+      <td>1000.0</td>
+      <td>201.802084</td>
+      <td>139.509787</td>
+      <td>0.000000</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>C10002</td>
+      <td>3202.467416</td>
+      <td>0.909091</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>6442.945483</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.250000</td>
+      <td>4</td>
+      <td>0</td>
+      <td>7000.0</td>
+      <td>4103.032597</td>
+      <td>1072.340217</td>
+      <td>0.222222</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>C10003</td>
+      <td>2495.148862</td>
+      <td>1.000000</td>
+      <td>773.17</td>
+      <td>773.17</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0</td>
+      <td>12</td>
+      <td>7500.0</td>
+      <td>622.066742</td>
+      <td>627.284787</td>
+      <td>0.000000</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>C10004</td>
+      <td>1666.670542</td>
+      <td>0.636364</td>
+      <td>1499.00</td>
+      <td>1499.00</td>
+      <td>0.00</td>
+      <td>205.788017</td>
+      <td>0.083333</td>
+      <td>0.083333</td>
+      <td>0.000000</td>
+      <td>0.083333</td>
+      <td>1</td>
+      <td>1</td>
+      <td>7500.0</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>0.000000</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>C10005</td>
+      <td>817.714335</td>
+      <td>1.000000</td>
+      <td>16.00</td>
+      <td>16.00</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.083333</td>
+      <td>0.083333</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1200.0</td>
+      <td>678.334763</td>
+      <td>244.791237</td>
+      <td>0.000000</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>8945</th>
+      <td>C19186</td>
+      <td>28.493517</td>
+      <td>1.000000</td>
+      <td>291.12</td>
+      <td>0.00</td>
+      <td>291.12</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.833333</td>
+      <td>0.000000</td>
+      <td>0</td>
+      <td>6</td>
+      <td>1000.0</td>
+      <td>325.594462</td>
+      <td>48.886365</td>
+      <td>0.500000</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>8946</th>
+      <td>C19187</td>
+      <td>19.183215</td>
+      <td>1.000000</td>
+      <td>300.00</td>
+      <td>0.00</td>
+      <td>300.00</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.833333</td>
+      <td>0.000000</td>
+      <td>0</td>
+      <td>6</td>
+      <td>1000.0</td>
+      <td>275.861322</td>
+      <td>NaN</td>
+      <td>0.000000</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>8947</th>
+      <td>C19188</td>
+      <td>23.398673</td>
+      <td>0.833333</td>
+      <td>144.40</td>
+      <td>0.00</td>
+      <td>144.40</td>
+      <td>0.000000</td>
+      <td>0.833333</td>
+      <td>0.000000</td>
+      <td>0.666667</td>
+      <td>0.000000</td>
+      <td>0</td>
+      <td>5</td>
+      <td>1000.0</td>
+      <td>81.270775</td>
+      <td>82.418369</td>
+      <td>0.250000</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>8948</th>
+      <td>C19189</td>
+      <td>13.457564</td>
+      <td>0.833333</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>36.558778</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.166667</td>
+      <td>2</td>
+      <td>0</td>
+      <td>500.0</td>
+      <td>52.549959</td>
+      <td>55.755628</td>
+      <td>0.250000</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>8949</th>
+      <td>C19190</td>
+      <td>372.708075</td>
+      <td>0.666667</td>
+      <td>1093.25</td>
+      <td>1093.25</td>
+      <td>0.00</td>
+      <td>127.040008</td>
+      <td>0.666667</td>
+      <td>0.666667</td>
+      <td>0.000000</td>
+      <td>0.333333</td>
+      <td>2</td>
+      <td>23</td>
+      <td>1200.0</td>
+      <td>63.165404</td>
+      <td>88.288956</td>
+      <td>0.000000</td>
+      <td>6</td>
+    </tr>
+  </tbody>
+</table>
+<p>8950 rows × 18 columns</p>
+</div>
+</div>
+</div>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 8950 entries, 0 to 8949
+Data columns (total 18 columns):
+ #   Column                            Non-Null Count  Dtype  
+---  ------                            --------------  -----  
+ 0   CUST_ID                           8950 non-null   object 
+ 1   BALANCE                           8950 non-null   float64
+ 2   BALANCE_FREQUENCY                 8950 non-null   float64
+ 3   PURCHASES                         8950 non-null   float64
+ 4   ONEOFF_PURCHASES                  8950 non-null   float64
+ 5   INSTALLMENTS_PURCHASES            8950 non-null   float64
+ 6   CASH_ADVANCE                      8950 non-null   float64
+ 7   PURCHASES_FREQUENCY               8950 non-null   float64
+ 8   ONEOFF_PURCHASES_FREQUENCY        8950 non-null   float64
+ 9   PURCHASES_INSTALLMENTS_FREQUENCY  8950 non-null   float64
+ 10  CASH_ADVANCE_FREQUENCY            8950 non-null   float64
+ 11  CASH_ADVANCE_TRX                  8950 non-null   int64  
+ 12  PURCHASES_TRX                     8950 non-null   int64  
+ 13  CREDIT_LIMIT                      8949 non-null   float64
+ 14  PAYMENTS                          8950 non-null   float64
+ 15  MINIMUM_PAYMENTS                  8637 non-null   float64
+ 16  PRC_FULL_PAYMENT                  8950 non-null   float64
+ 17  TENURE                            8950 non-null   int64  
+dtypes: float64(14), int64(3), object(1)
+memory usage: 1.2+ MB
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 8950 entries, 0 to 8949
+Data columns (total 18 columns):
+ #   Column                            Non-Null Count  Dtype  
+---  ------                            --------------  -----  
+ 0   CUST_ID                           8950 non-null   object 
+ 1   BALANCE                           8950 non-null   float64
+ 2   BALANCE_FREQUENCY                 8950 non-null   float64
+ 3   PURCHASES                         8950 non-null   float64
+ 4   ONEOFF_PURCHASES                  8950 non-null   float64
+ 5   INSTALLMENTS_PURCHASES            8950 non-null   float64
+ 6   CASH_ADVANCE                      8950 non-null   float64
+ 7   PURCHASES_FREQUENCY               8950 non-null   float64
+ 8   ONEOFF_PURCHASES_FREQUENCY        8950 non-null   float64
+ 9   PURCHASES_INSTALLMENTS_FREQUENCY  8950 non-null   float64
+ 10  CASH_ADVANCE_FREQUENCY            8950 non-null   float64
+ 11  CASH_ADVANCE_TRX                  8950 non-null   int64  
+ 12  PURCHASES_TRX                     8950 non-null   int64  
+ 13  CREDIT_LIMIT                      8949 non-null   float64
+ 14  PAYMENTS                          8950 non-null   float64
+ 15  MINIMUM_PAYMENTS                  8637 non-null   float64
+ 16  PRC_FULL_PAYMENT                  8950 non-null   float64
+ 17  TENURE                            8950 non-null   int64  
+dtypes: float64(14), int64(3), object(1)
+memory usage: 1.2+ MB</code></pre>
+</div>
+</div>
+<table class="table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 77%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CUSTID</td>
+<td>Identification of Credit Card holder</td>
+</tr>
+<tr class="even">
+<td>BALANCE</td>
+<td>Balance amount left in customer’s account to make purchases</td>
+</tr>
+<tr class="odd">
+<td>BALANCE_FREQUENCY</td>
+<td>How frequently the Balance is updated, score between 0 and 1 (1 = frequently updated, 0 = not frequently updated)</td>
+</tr>
+<tr class="even">
+<td>PURCHASES</td>
+<td>Amount of purchases made from account</td>
+</tr>
+<tr class="odd">
+<td>ONEOFFPURCHASES</td>
+<td>Maximum purchase amount done in one-go</td>
+</tr>
+<tr class="even">
+<td>INSTALLMENTS_PURCHASES</td>
+<td>Amount of purchase done in installment</td>
+</tr>
+<tr class="odd">
+<td>CASH_ADVANCE</td>
+<td>Cash in advance given by the user</td>
+</tr>
+<tr class="even">
+<td>PURCHASES_FREQUENCY</td>
+<td>How frequently the Purchases are being made, score between 0 and 1 (1 = frequently purchased, 0 = not frequently purchased)</td>
+</tr>
+<tr class="odd">
+<td>ONEOFF_PURCHASES_FREQUENCY</td>
+<td>How frequently Purchases are happening in one-go (1 = frequently purchased, 0 = not frequently purchased)</td>
+</tr>
+<tr class="even">
+<td>PURCHASES_INSTALLMENTS_FREQUENCY</td>
+<td>How frequently purchases in installments are being done (1 = frequently done, 0 = not frequently done)</td>
+</tr>
+<tr class="odd">
+<td>CASH_ADVANCE_FREQUENCY</td>
+<td>How frequently the cash in advance being paid</td>
+</tr>
+<tr class="even">
+<td>CASH_ADVANCE_TRX</td>
+<td>Number of Transactions made with “Cash in Advance”</td>
+</tr>
+<tr class="odd">
+<td>PURCHASES_TRX</td>
+<td>Number of purchase transactions made</td>
+</tr>
+<tr class="even">
+<td>CREDIT_LIMIT</td>
+<td>Limit of Credit Card for user</td>
+</tr>
+<tr class="odd">
+<td>PAYMENTS</td>
+<td>Amount of Payment done by user</td>
+</tr>
+<tr class="even">
+<td>MINIMUM_PAYMENTS</td>
+<td>Minimum amount of payments made by user</td>
+</tr>
+<tr class="odd">
+<td>PRC_FULL_PAYMENT</td>
+<td>Percent of full payment paid by user</td>
+</tr>
+<tr class="even">
+<td>TENURE</td>
+<td>Tenure of credit card service for user</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="exploratory-data-analysis-eda" class="level2">
+<h2 class="anchored" data-anchor-id="exploratory-data-analysis-eda">3. Exploratory Data Analysis (EDA)</h2>
+<p>Let’s check the basic statistics and visualize some features:</p>
+<section id="descriptive-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="descriptive-statistics">Descriptive statistics</h3>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display basic statistics</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>data.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>BALANCE</th>
+      <th>BALANCE_FREQUENCY</th>
+      <th>PURCHASES</th>
+      <th>ONEOFF_PURCHASES</th>
+      <th>INSTALLMENTS_PURCHASES</th>
+      <th>CASH_ADVANCE</th>
+      <th>PURCHASES_FREQUENCY</th>
+      <th>ONEOFF_PURCHASES_FREQUENCY</th>
+      <th>PURCHASES_INSTALLMENTS_FREQUENCY</th>
+      <th>CASH_ADVANCE_FREQUENCY</th>
+      <th>CASH_ADVANCE_TRX</th>
+      <th>PURCHASES_TRX</th>
+      <th>CREDIT_LIMIT</th>
+      <th>PAYMENTS</th>
+      <th>MINIMUM_PAYMENTS</th>
+      <th>PRC_FULL_PAYMENT</th>
+      <th>TENURE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>8950.000000</td>
+      <td>8950.000000</td>
+      <td>8950.000000</td>
+      <td>8950.000000</td>
+      <td>8950.000000</td>
+      <td>8950.000000</td>
+      <td>8950.000000</td>
+      <td>8950.000000</td>
+      <td>8950.000000</td>
+      <td>8950.000000</td>
+      <td>8950.000000</td>
+      <td>8950.000000</td>
+      <td>8949.000000</td>
+      <td>8950.000000</td>
+      <td>8637.000000</td>
+      <td>8950.000000</td>
+      <td>8950.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>1564.474828</td>
+      <td>0.877271</td>
+      <td>1003.204834</td>
+      <td>592.437371</td>
+      <td>411.067645</td>
+      <td>978.871112</td>
+      <td>0.490351</td>
+      <td>0.202458</td>
+      <td>0.364437</td>
+      <td>0.135144</td>
+      <td>3.248827</td>
+      <td>14.709832</td>
+      <td>4494.449450</td>
+      <td>1733.143852</td>
+      <td>864.206542</td>
+      <td>0.153715</td>
+      <td>11.517318</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>2081.531879</td>
+      <td>0.236904</td>
+      <td>2136.634782</td>
+      <td>1659.887917</td>
+      <td>904.338115</td>
+      <td>2097.163877</td>
+      <td>0.401371</td>
+      <td>0.298336</td>
+      <td>0.397448</td>
+      <td>0.200121</td>
+      <td>6.824647</td>
+      <td>24.857649</td>
+      <td>3638.815725</td>
+      <td>2895.063757</td>
+      <td>2372.446607</td>
+      <td>0.292499</td>
+      <td>1.338331</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>50.000000</td>
+      <td>0.000000</td>
+      <td>0.019163</td>
+      <td>0.000000</td>
+      <td>6.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>128.281915</td>
+      <td>0.888889</td>
+      <td>39.635000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.083333</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>1600.000000</td>
+      <td>383.276166</td>
+      <td>169.123707</td>
+      <td>0.000000</td>
+      <td>12.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>873.385231</td>
+      <td>1.000000</td>
+      <td>361.280000</td>
+      <td>38.000000</td>
+      <td>89.000000</td>
+      <td>0.000000</td>
+      <td>0.500000</td>
+      <td>0.083333</td>
+      <td>0.166667</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>7.000000</td>
+      <td>3000.000000</td>
+      <td>856.901546</td>
+      <td>312.343947</td>
+      <td>0.000000</td>
+      <td>12.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>2054.140036</td>
+      <td>1.000000</td>
+      <td>1110.130000</td>
+      <td>577.405000</td>
+      <td>468.637500</td>
+      <td>1113.821139</td>
+      <td>0.916667</td>
+      <td>0.300000</td>
+      <td>0.750000</td>
+      <td>0.222222</td>
+      <td>4.000000</td>
+      <td>17.000000</td>
+      <td>6500.000000</td>
+      <td>1901.134317</td>
+      <td>825.485459</td>
+      <td>0.142857</td>
+      <td>12.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>19043.138560</td>
+      <td>1.000000</td>
+      <td>49039.570000</td>
+      <td>40761.250000</td>
+      <td>22500.000000</td>
+      <td>47137.211760</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.500000</td>
+      <td>123.000000</td>
+      <td>358.000000</td>
+      <td>30000.000000</td>
+      <td>50721.483360</td>
+      <td>76406.207520</td>
+      <td>1.000000</td>
+      <td>12.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p><strong>Key Insights from Descriptive Statistics:</strong></p>
+<ul>
+<li>The mean balance of customers is approximately $1,564.</li>
+<li>The balance frequency is updated frequently, with an average of around 0.9.</li>
+<li>The average purchase amount is about $1,000.</li>
+<li>The mean one-off purchase amount is roughly $600.</li>
+<li>The average purchases frequency is around 0.5.</li>
+<li>The average frequencies for one-off purchases, installment purchases, and cash advances are generally low.</li>
+<li>The average credit limit for customers is around $4,500.</li>
+<li>The percentage of full payments made is 15%.</li>
+<li>The average tenure of customers is 11 years.</li>
+</ul>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's see if we have any missing data</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sns.heatmap(data.isnull(), yticklabels<span class="op">=</span><span class="va">False</span>, cbar<span class="op">=</span><span class="va">False</span>, cmap<span class="op">=</span><span class="st">"Blues"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;Axes: &gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="Customer_segmentation_files/figure-html/cell-6-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for missing values</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>data.isnull().<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>CUST_ID                               0
+BALANCE                               0
+BALANCE_FREQUENCY                     0
+PURCHASES                             0
+ONEOFF_PURCHASES                      0
+INSTALLMENTS_PURCHASES                0
+CASH_ADVANCE                          0
+PURCHASES_FREQUENCY                   0
+ONEOFF_PURCHASES_FREQUENCY            0
+PURCHASES_INSTALLMENTS_FREQUENCY      0
+CASH_ADVANCE_FREQUENCY                0
+CASH_ADVANCE_TRX                      0
+PURCHASES_TRX                         0
+CREDIT_LIMIT                          1
+PAYMENTS                              0
+MINIMUM_PAYMENTS                    313
+PRC_FULL_PAYMENT                      0
+TENURE                                0
+dtype: int64</code></pre>
+</div>
+</div>
+<p>There are missing data in <code>MINIMUM_PAYMENTS</code> and <code>CREDIT_LIMIT</code>.</p>
+</section>
+<section id="distributions-of-numerical-features" class="level3">
+<h3 class="anchored" data-anchor-id="distributions-of-numerical-features">Distributions of numerical features</h3>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize distributions of numerical features</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>data.hist(bins<span class="op">=</span><span class="dv">20</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">10</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="Customer_segmentation_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="correlation-matrix-between-features" class="level3">
+<h3 class="anchored" data-anchor-id="correlation-matrix-between-features">Correlation matrix between features</h3>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlation matrix</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>data_numeric <span class="op">=</span> data.drop(columns<span class="op">=</span>[<span class="st">"CUST_ID"</span>])</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>sns.heatmap(data_numeric.corr(), annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">".2f"</span>, cmap<span class="op">=</span><span class="st">"coolwarm"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="Customer_segmentation_files/figure-html/cell-9-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The heatmap provides a visual representation of the correlation coefficients, with colors indicating the strength and direction of the correlations</p>
+<p><strong><em>Strong Positive Correlations:</em></strong> - <code>PURCHASES</code> and <code>ONEOFF_PURCHASES</code> (0.92): Indicates that one-off purchases are a major component of total purchases. - <code>PURCHASES_INSTALLMENTS_FREQUENCY</code> and <code>PURCHASES_FREQUENCY</code> (0.86): Indicates that the frequency of installment purchases is closely related to the overall frequency of purchases. - <code>CASH_ADVANCE</code> and <code>CASH_ADVANCE_TRX</code> (0.66): Indicates that the amount of cash advances is strongly related to the number of cash advance transactions.</p>
+<p><strong><em>Moderate Positive Correlations:</em></strong></p>
+<ul>
+<li><code>CREDIT_LIMIT</code> and <code>BALANCE</code> (0.53): Suggests that higher credit limits are associated with higher balances.</li>
+<li><code>PURCHASES</code> and <code>PURCHASES_TRX</code> (0.69): Indicates a moderate relationship between total purchases and the number of purchase transactions.</li>
+<li><code>PAYMENTS</code> and <code>PURCHASES</code> (0.60): Indicates that higher payments are associated with higher purchase amounts</li>
+</ul>
+<p><strong><em>Strong Negative Correlations:</em></strong></p>
+<ul>
+<li><code>PRC_FULL_PAYMENT</code> and <code>BALANCE</code> (-0.32): Indicates that a higher percentage of full payments is associated with lower balances.</li>
+</ul>
+<p><strong><em>Moderate Negative Correlations:</em></strong></p>
+<ul>
+<li><code>CASH_ADVANCE_FREQUENCY</code> and <code>PURCHASES_INSTALLMENTS_FREQUENCY</code> (-0.31): Suggests that frequent cash advances are associated with less frequent installment purchases.</li>
+</ul>
+</section>
+<section id="analytical-points-from-eda" class="level3">
+<h3 class="anchored" data-anchor-id="analytical-points-from-eda">Analytical Points from EDA:</h3>
+<p><strong>1. Customer Engagement:</strong> The high mean balance ($1,564) and frequent balance (average balance frequency of ~0.9) indicate active account management and regular transactions by customers.</p>
+<p><strong>2. Spending Behavior:</strong> With an average purchase amount of $1,000 and an average one-off purchase amount of ~$600, customers seem to engage in both frequent smaller purchases and occasional larger one-off purchases.</p>
+<p><strong>3. Low Frequency Transactions:</strong> The generally low average frequencies for one-off purchases, installment purchases, and cash advances suggest that while customers do make these types of transactions, they do so infrequently.</p>
+<p><strong>4. Credit Utilization:</strong> The average credit limit of $4,500 suggests that the bank extends a significant amount of credit to its customers. However, the actual usage and payment patterns (such as the 15% full payment rate) indicate varying levels of credit utilization and repayment behavior.</p>
+<p><strong>5. Financial Responsibility:</strong> The relatively low percentage of full payments (15%) might indicate that a large proportion of customers are not paying off their balances in full each month, which could lead to higher interest income for the bank but also suggests potential financial strain on customers.</p>
+<p><strong>6. Customer Loyalty:</strong> An average tenure of 11 years highlights a strong customer loyalty and long-term relationship with the bank, which is a positive indicator of customer satisfaction and retention.</p>
+<p><strong>7. Marketing Strategy Implications:</strong> These insights can help the marketing team tailor their campaigns to different customer segments. For example, they could target customers with high balances and low payment rates with offers for balance transfer or debt consolidation products, or incentivize frequent small purchasers with rewards programs.</p>
+</section>
+</section>
+<section id="data-preprocessing" class="level2">
+<h2 class="anchored" data-anchor-id="data-preprocessing">4. Data Preprocessing</h2>
+<p>Handle missing values and prepare the data for clustering:</p>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop non-numeric columns if necessary (e.g., CUST_ID)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> data.drop(columns<span class="op">=</span>[<span class="st">"CUST_ID"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fill missing values with mean</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> data.fillna(data.mean())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if any missing value again</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>data.isnull().<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>BALANCE                             0
+BALANCE_FREQUENCY                   0
+PURCHASES                           0
+ONEOFF_PURCHASES                    0
+INSTALLMENTS_PURCHASES              0
+CASH_ADVANCE                        0
+PURCHASES_FREQUENCY                 0
+ONEOFF_PURCHASES_FREQUENCY          0
+PURCHASES_INSTALLMENTS_FREQUENCY    0
+CASH_ADVANCE_FREQUENCY              0
+CASH_ADVANCE_TRX                    0
+PURCHASES_TRX                       0
+CREDIT_LIMIT                        0
+PAYMENTS                            0
+MINIMUM_PAYMENTS                    0
+PRC_FULL_PAYMENT                    0
+TENURE                              0
+dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's see if we have duplicated entries in the data</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>data.duplicated().<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>0</code></pre>
+</div>
+</div>
+</section>
+<section id="feature-scalling" class="level2">
+<h2 class="anchored" data-anchor-id="feature-scalling">5. Feature Scalling</h2>
+<p>Standardize the features before clustering:</p>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Standardize the data</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>scaled_data <span class="op">=</span> scaler.fit_transform(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>scaled_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(8950, 17)</code></pre>
+</div>
+</div>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>scaled_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>array([[-0.73198937, -0.24943448, -0.42489974, ..., -0.31096755, -0.52555097,
+         0.36067954],
+       [ 0.78696085,  0.13432467, -0.46955188, ...,  0.08931021,  0.2342269 ,
+         0.36067954],
+       [ 0.44713513,  0.51808382, -0.10766823, ..., -0.10166318, -0.52555097,
+         0.36067954],
+       ...,
+       [-0.7403981 , -0.18547673, -0.40196519, ..., -0.33546549,  0.32919999,
+        -4.12276757],
+       [-0.74517423, -0.18547673, -0.46955188, ..., -0.34690648,  0.32919999,
+        -4.12276757],
+       [-0.57257511, -0.88903307,  0.04214581, ..., -0.33294642, -0.52555097,
+        -4.12276757]])</code></pre>
+</div>
+</div>
+<p><strong><em>Why do we need scaling data before clustering ?</em></strong></p>
+<blockquote class="blockquote">
+<p>Scaling data before clustering is important because many clustering algorithms rely on distance measures, such as Euclidean distance, to determine the similarity between data points. If the data is not scaled, features with larger ranges can dominate the distance calculations, potentially skewing the results.</p>
+<p>Common methods for scaling data include:</p>
+<ul>
+<li><strong>Standardization</strong>: Transforming the data to have a mean of zero and a standard deviation of one.</li>
+<li><strong>Normalization</strong>: Scaling the data to a specific range, usually [0, 1] or [-1, 1].</li>
+</ul>
+<p>By scaling the data, you ensure that the clustering results are more reliable and meaningful.</p>
+</blockquote>
+</section>
+<section id="model-training" class="level2">
+<h2 class="anchored" data-anchor-id="model-training">6. Model Training</h2>
+<section id="apply-k-means-clustering" class="level3">
+<h3 class="anchored" data-anchor-id="apply-k-means-clustering">Apply K-Means clustering</h3>
+<p>Apply K-Means clustering and determine the optimal number of clusters</p>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine the optimal number of clusters using the elbow method</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>wcss <span class="op">=</span> []</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">20</span>):</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    kmeans <span class="op">=</span> KMeans(</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>        n_clusters<span class="op">=</span>i, init<span class="op">=</span><span class="st">"k-means++"</span>, max_iter<span class="op">=</span><span class="dv">300</span>, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    kmeans.fit(scaled_data)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    wcss.append(kmeans.inertia_)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the elbow method graph</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>plt.plot(wcss, marker<span class="op">=</span><span class="st">"o"</span>)</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Elbow Method"</span>)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Number of clusters"</span>)</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"WCSS"</span>)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="Customer_segmentation_files/figure-html/cell-17-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Choose the optimal number of clusters (e.g., 7 based on the elbow method) and fit the K-Means model:</p>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit K-Means model</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>optimal_clusters <span class="op">=</span> <span class="dv">7</span>  <span class="co"># Based on the elbow method</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    n_clusters<span class="op">=</span>optimal_clusters,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    init<span class="op">=</span><span class="st">"k-means++"</span>,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    max_iter<span class="op">=</span><span class="dv">300</span>,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    n_init<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>kmeans.fit(scaled_data)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>kmeans</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<style>#sk-container-id-1 {
+  /* Definition of color scheme common for light and dark mode */
+  --sklearn-color-text: black;
+  --sklearn-color-line: gray;
+  /* Definition of color scheme for unfitted estimators */
+  --sklearn-color-unfitted-level-0: #fff5e6;
+  --sklearn-color-unfitted-level-1: #f6e4d2;
+  --sklearn-color-unfitted-level-2: #ffe0b3;
+  --sklearn-color-unfitted-level-3: chocolate;
+  /* Definition of color scheme for fitted estimators */
+  --sklearn-color-fitted-level-0: #f0f8ff;
+  --sklearn-color-fitted-level-1: #d4ebff;
+  --sklearn-color-fitted-level-2: #b3dbfd;
+  --sklearn-color-fitted-level-3: cornflowerblue;
+
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
+  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-icon: #696969;
+
+  @media (prefers-color-scheme: dark) {
+    /* Redefinition of color scheme for dark theme */
+    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
+    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-icon: #878787;
+  }
+}
+
+#sk-container-id-1 {
+  color: var(--sklearn-color-text);
+}
+
+#sk-container-id-1 pre {
+  padding: 0;
+}
+
+#sk-container-id-1 input.sk-hidden--visually {
+  border: 0;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+#sk-container-id-1 div.sk-dashed-wrapped {
+  border: 1px dashed var(--sklearn-color-line);
+  margin: 0 0.4em 0.5em 0.4em;
+  box-sizing: border-box;
+  padding-bottom: 0.4em;
+  background-color: var(--sklearn-color-background);
+}
+
+#sk-container-id-1 div.sk-container {
+  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
+     but bootstrap.min.css set `[hidden] { display: none !important; }`
+     so we also need the `!important` here to be able to override the
+     default hidden behavior on the sphinx rendered scikit-learn.org.
+     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
+  display: inline-block !important;
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-text-repr-fallback {
+  display: none;
+}
+
+div.sk-parallel-item,
+div.sk-serial,
+div.sk-item {
+  /* draw centered vertical line to link estimators */
+  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Parallel-specific style estimator block */
+
+#sk-container-id-1 div.sk-parallel-item::after {
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
+  flex-grow: 1;
+}
+
+#sk-container-id-1 div.sk-parallel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: var(--sklearn-color-background);
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-parallel-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#sk-container-id-1 div.sk-parallel-item:first-child::after {
+  align-self: flex-end;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:last-child::after {
+  align-self: flex-start;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:only-child::after {
+  width: 0;
+}
+
+/* Serial-specific style estimator block */
+
+#sk-container-id-1 div.sk-serial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--sklearn-color-background);
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+
+/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
+clickable and can be expanded/collapsed.
+- Pipeline and ColumnTransformer use this feature and define the default style
+- Estimators will overwrite some part of the style using the `sk-estimator` class
+*/
+
+/* Pipeline and ColumnTransformer style (default) */
+
+#sk-container-id-1 div.sk-toggleable {
+  /* Default theme specific background. It is overwritten whether we have a
+  specific estimator or a Pipeline/ColumnTransformer */
+  background-color: var(--sklearn-color-background);
+}
+
+/* Toggleable label */
+#sk-container-id-1 label.sk-toggleable__label {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:before {
+  /* Arrow on the left of the label */
+  content: "▸";
+  float: left;
+  margin-right: 0.25em;
+  color: var(--sklearn-color-icon);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
+  color: var(--sklearn-color-text);
+}
+
+/* Toggleable content - dropdown */
+
+#sk-container-id-1 div.sk-toggleable__content {
+  max-height: 0;
+  max-width: 0;
+  overflow: hidden;
+  text-align: left;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content pre {
+  margin: 0.2em;
+  border-radius: 0.25em;
+  color: var(--sklearn-color-text);
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted pre {
+  /* unfitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+  /* Expand drop-down */
+  max-height: 200px;
+  max-width: 100%;
+  overflow: auto;
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+  content: "▾";
+}
+
+/* Pipeline/ColumnTransformer-specific style */
+
+#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator-specific style */
+
+/* Colorize estimator box */
+#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label label.sk-toggleable__label,
+#sk-container-id-1 div.sk-label label {
+  /* The background is the default theme color */
+  color: var(--sklearn-color-text-on-default-background);
+}
+
+/* On hover, darken the color of the background */
+#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+/* Label box, darken color on hover, fitted */
+#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator label */
+
+#sk-container-id-1 div.sk-label label {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1.2em;
+}
+
+#sk-container-id-1 div.sk-label-container {
+  text-align: center;
+}
+
+/* Estimator-specific */
+#sk-container-id-1 div.sk-estimator {
+  font-family: monospace;
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+/* on hover */
+#sk-container-id-1 div.sk-estimator:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Specification for estimator info (e.g. "i" and "?") */
+
+/* Common style for "i" and "?" */
+
+.sk-estimator-doc-link,
+a:link.sk-estimator-doc-link,
+a:visited.sk-estimator-doc-link {
+  float: right;
+  font-size: smaller;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1em;
+  height: 1em;
+  width: 1em;
+  text-decoration: none !important;
+  margin-left: 1ex;
+  /* unfitted */
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-1);
+}
+
+.sk-estimator-doc-link.fitted,
+a:link.sk-estimator-doc-link.fitted,
+a:visited.sk-estimator-doc-link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+div.sk-estimator:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover,
+div.sk-label-container:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover,
+div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+/* Span, style for the box shown on hovering the info icon */
+.sk-estimator-doc-link span {
+  display: none;
+  z-index: 9999;
+  position: relative;
+  font-weight: normal;
+  right: .2ex;
+  padding: .5ex;
+  margin: .5ex;
+  width: min-content;
+  min-width: 20ex;
+  max-width: 50ex;
+  color: var(--sklearn-color-text);
+  box-shadow: 2pt 2pt 4pt #999;
+  /* unfitted */
+  background: var(--sklearn-color-unfitted-level-0);
+  border: .5pt solid var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted span {
+  /* fitted */
+  background: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3);
+}
+
+.sk-estimator-doc-link:hover span {
+  display: block;
+}
+
+/* "?"-specific style due to the `<a>` HTML tag */
+
+#sk-container-id-1 a.estimator_doc_link {
+  float: right;
+  font-size: 1rem;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1rem;
+  height: 1rem;
+  width: 1rem;
+  text-decoration: none;
+  /* unfitted */
+  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+#sk-container-id-1 a.estimator_doc_link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+}
+</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>KMeans(n_clusters=7, n_init=10, random_state=42)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked=""><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted">&nbsp;&nbsp;KMeans<a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.4/modules/generated/sklearn.cluster.KMeans.html">?<span>Documentation for KMeans</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></label><div class="sk-toggleable__content fitted"><pre>KMeans(n_clusters=7, n_init=10, random_state=42)</pre></div> </div></div></div></div>
+</div>
+</div>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cluster_center</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>kmeans.cluster_centers_.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(7, 17)</code></pre>
+</div>
+</div>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cluster_center</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>cluster_centers <span class="op">=</span> pd.DataFrame(data<span class="op">=</span>kmeans.cluster_centers_, columns<span class="op">=</span>[data.columns])</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>cluster_centers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>BALANCE</th>
+      <th>BALANCE_FREQUENCY</th>
+      <th>PURCHASES</th>
+      <th>ONEOFF_PURCHASES</th>
+      <th>INSTALLMENTS_PURCHASES</th>
+      <th>CASH_ADVANCE</th>
+      <th>PURCHASES_FREQUENCY</th>
+      <th>ONEOFF_PURCHASES_FREQUENCY</th>
+      <th>PURCHASES_INSTALLMENTS_FREQUENCY</th>
+      <th>CASH_ADVANCE_FREQUENCY</th>
+      <th>CASH_ADVANCE_TRX</th>
+      <th>PURCHASES_TRX</th>
+      <th>CREDIT_LIMIT</th>
+      <th>PAYMENTS</th>
+      <th>MINIMUM_PAYMENTS</th>
+      <th>PRC_FULL_PAYMENT</th>
+      <th>TENURE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.430238</td>
+      <td>0.419467</td>
+      <td>6.915048</td>
+      <td>6.083034</td>
+      <td>5.172266</td>
+      <td>0.038778</td>
+      <td>1.090699</td>
+      <td>1.879303</td>
+      <td>1.049413</td>
+      <td>-0.249227</td>
+      <td>-0.038166</td>
+      <td>4.646228</td>
+      <td>2.198371</td>
+      <td>4.783704</td>
+      <td>1.080945</td>
+      <td>0.824001</td>
+      <td>0.334613</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.666473</td>
+      <td>0.392099</td>
+      <td>-0.205327</td>
+      <td>-0.149913</td>
+      <td>-0.210162</td>
+      <td>1.990753</td>
+      <td>-0.456789</td>
+      <td>-0.190269</td>
+      <td>-0.404044</td>
+      <td>1.908547</td>
+      <td>1.922104</td>
+      <td>-0.241414</td>
+      <td>1.007587</td>
+      <td>0.834821</td>
+      <td>0.552973</td>
+      <td>-0.391161</td>
+      <td>0.069807</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.126801</td>
+      <td>0.429730</td>
+      <td>0.939029</td>
+      <td>0.895888</td>
+      <td>0.574411</td>
+      <td>-0.309125</td>
+      <td>1.092770</td>
+      <td>1.872513</td>
+      <td>0.534806</td>
+      <td>-0.410394</td>
+      <td>-0.320751</td>
+      <td>1.196848</td>
+      <td>0.701672</td>
+      <td>0.385048</td>
+      <td>-0.057462</td>
+      <td>0.456446</td>
+      <td>0.307642</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-0.367555</td>
+      <td>0.330562</td>
+      <td>-0.039840</td>
+      <td>-0.234950</td>
+      <td>0.337266</td>
+      <td>-0.368099</td>
+      <td>0.980609</td>
+      <td>-0.357343</td>
+      <td>1.173200</td>
+      <td>-0.477687</td>
+      <td>-0.362424</td>
+      <td>0.173897</td>
+      <td>-0.278236</td>
+      <td>-0.221810</td>
+      <td>-0.015735</td>
+      <td>0.307237</td>
+      <td>0.252156</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-0.335506</td>
+      <td>-0.348076</td>
+      <td>-0.284525</td>
+      <td>-0.208973</td>
+      <td>-0.288475</td>
+      <td>0.065539</td>
+      <td>-0.198735</td>
+      <td>-0.272572</td>
+      <td>-0.230755</td>
+      <td>0.304112</td>
+      <td>-0.002216</td>
+      <td>-0.385586</td>
+      <td>-0.556898</td>
+      <td>-0.390701</td>
+      <td>-0.209383</td>
+      <td>0.012899</td>
+      <td>-3.193765</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0.007813</td>
+      <td>0.402983</td>
+      <td>-0.343915</td>
+      <td>-0.225214</td>
+      <td>-0.399316</td>
+      <td>-0.104212</td>
+      <td>-0.810261</td>
+      <td>-0.336386</td>
+      <td>-0.752275</td>
+      <td>0.084852</td>
+      <td>-0.041723</td>
+      <td>-0.464616</td>
+      <td>-0.301035</td>
+      <td>-0.248908</td>
+      <td>-0.015791</td>
+      <td>-0.452844</td>
+      <td>0.272305</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>-0.701872</td>
+      <td>-2.134325</td>
+      <td>-0.306924</td>
+      <td>-0.230292</td>
+      <td>-0.302515</td>
+      <td>-0.323078</td>
+      <td>-0.547138</td>
+      <td>-0.427951</td>
+      <td>-0.441452</td>
+      <td>-0.522249</td>
+      <td>-0.376815</td>
+      <td>-0.416568</td>
+      <td>-0.172739</td>
+      <td>-0.201746</td>
+      <td>-0.257554</td>
+      <td>0.295010</td>
+      <td>0.200781</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p><strong>Cluster Centers</strong></p>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In order to understand what these numbers mean, let's perform inverse transformation</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>cluster_centers <span class="op">=</span> scaler.inverse_transform(cluster_centers)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>cluster_centers <span class="op">=</span> pd.DataFrame(data<span class="op">=</span>cluster_centers, columns<span class="op">=</span>[data.columns])</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>cluster_centers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>BALANCE</th>
+      <th>BALANCE_FREQUENCY</th>
+      <th>PURCHASES</th>
+      <th>ONEOFF_PURCHASES</th>
+      <th>INSTALLMENTS_PURCHASES</th>
+      <th>CASH_ADVANCE</th>
+      <th>PURCHASES_FREQUENCY</th>
+      <th>ONEOFF_PURCHASES_FREQUENCY</th>
+      <th>PURCHASES_INSTALLMENTS_FREQUENCY</th>
+      <th>CASH_ADVANCE_FREQUENCY</th>
+      <th>CASH_ADVANCE_TRX</th>
+      <th>PURCHASES_TRX</th>
+      <th>CREDIT_LIMIT</th>
+      <th>PAYMENTS</th>
+      <th>MINIMUM_PAYMENTS</th>
+      <th>PRC_FULL_PAYMENT</th>
+      <th>TENURE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>4541.393882</td>
+      <td>0.976638</td>
+      <td>15777.311395</td>
+      <td>10689.027791</td>
+      <td>5088.283605</td>
+      <td>1060.190695</td>
+      <td>0.928101</td>
+      <td>0.763090</td>
+      <td>0.781501</td>
+      <td>0.085271</td>
+      <td>2.988372</td>
+      <td>130.197674</td>
+      <td>12493.023256</td>
+      <td>15581.496801</td>
+      <td>3383.304083</td>
+      <td>0.394721</td>
+      <td>11.965116</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>5033.096672</td>
+      <td>0.970155</td>
+      <td>564.520447</td>
+      <td>343.613277</td>
+      <td>221.020895</td>
+      <td>5153.573564</td>
+      <td>0.307019</td>
+      <td>0.145697</td>
+      <td>0.203860</td>
+      <td>0.517064</td>
+      <td>16.365772</td>
+      <td>8.709172</td>
+      <td>8160.463697</td>
+      <td>4149.870001</td>
+      <td>2152.885952</td>
+      <td>0.039307</td>
+      <td>11.610738</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1828.399674</td>
+      <td>0.979070</td>
+      <td>3009.455142</td>
+      <td>2079.427650</td>
+      <td>930.500678</td>
+      <td>330.620880</td>
+      <td>0.928932</td>
+      <td>0.761065</td>
+      <td>0.576983</td>
+      <td>0.053020</td>
+      <td>1.059937</td>
+      <td>44.458991</td>
+      <td>7047.418985</td>
+      <td>2847.821449</td>
+      <td>730.293998</td>
+      <td>0.287217</td>
+      <td>11.929022</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>799.439665</td>
+      <td>0.955578</td>
+      <td>918.085545</td>
+      <td>202.468866</td>
+      <td>716.053491</td>
+      <td>206.951098</td>
+      <td>0.883916</td>
+      <td>0.095855</td>
+      <td>0.830697</td>
+      <td>0.039554</td>
+      <td>0.775550</td>
+      <td>19.032274</td>
+      <td>3482.112568</td>
+      <td>1091.026929</td>
+      <td>827.537625</td>
+      <td>0.243576</td>
+      <td>11.854768</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>866.148306</td>
+      <td>0.794815</td>
+      <td>395.311749</td>
+      <td>245.585564</td>
+      <td>150.203132</td>
+      <td>1116.308792</td>
+      <td>0.410589</td>
+      <td>0.121144</td>
+      <td>0.272729</td>
+      <td>0.196000</td>
+      <td>3.233704</td>
+      <td>5.125596</td>
+      <td>2468.226470</td>
+      <td>602.104087</td>
+      <td>376.247870</td>
+      <td>0.157487</td>
+      <td>7.243243</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1580.736068</td>
+      <td>0.972734</td>
+      <td>268.425678</td>
+      <td>218.628807</td>
+      <td>49.971063</td>
+      <td>760.334088</td>
+      <td>0.165154</td>
+      <td>0.102107</td>
+      <td>0.065464</td>
+      <td>0.152124</td>
+      <td>2.964097</td>
+      <td>3.161211</td>
+      <td>3399.161094</td>
+      <td>1012.580763</td>
+      <td>827.406808</td>
+      <td>0.021266</td>
+      <td>11.881732</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>103.587241</td>
+      <td>0.371669</td>
+      <td>347.456361</td>
+      <td>210.199629</td>
+      <td>137.506773</td>
+      <td>301.361116</td>
+      <td>0.270757</td>
+      <td>0.074792</td>
+      <td>0.188993</td>
+      <td>0.030637</td>
+      <td>0.677338</td>
+      <td>4.355518</td>
+      <td>3865.955724</td>
+      <td>1149.108580</td>
+      <td>263.988609</td>
+      <td>0.240000</td>
+      <td>11.786015</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p><strong>Classify data into clusters</strong></p>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>markdown_text <span class="op">=</span> <span class="ss">f"Our account data is now classified into `</span><span class="sc">{</span>optimal_clusters<span class="sc">}</span><span class="ss">` clusters"</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>Markdown(markdown_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p>Our account data is now classified into <code>7</code> clusters</p>
+</div>
+</div>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict cluster from scaled_data</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>clusters <span class="op">=</span> kmeans.fit_predict(scaled_data)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the cluster labels to the original data</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>data[<span class="st">"Cluster"</span>] <span class="op">=</span> clusters</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>BALANCE</th>
+      <th>BALANCE_FREQUENCY</th>
+      <th>PURCHASES</th>
+      <th>ONEOFF_PURCHASES</th>
+      <th>INSTALLMENTS_PURCHASES</th>
+      <th>CASH_ADVANCE</th>
+      <th>PURCHASES_FREQUENCY</th>
+      <th>ONEOFF_PURCHASES_FREQUENCY</th>
+      <th>PURCHASES_INSTALLMENTS_FREQUENCY</th>
+      <th>CASH_ADVANCE_FREQUENCY</th>
+      <th>CASH_ADVANCE_TRX</th>
+      <th>PURCHASES_TRX</th>
+      <th>CREDIT_LIMIT</th>
+      <th>PAYMENTS</th>
+      <th>MINIMUM_PAYMENTS</th>
+      <th>PRC_FULL_PAYMENT</th>
+      <th>TENURE</th>
+      <th>Cluster</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>40.900749</td>
+      <td>0.818182</td>
+      <td>95.40</td>
+      <td>0.00</td>
+      <td>95.40</td>
+      <td>0.000000</td>
+      <td>0.166667</td>
+      <td>0.000000</td>
+      <td>0.083333</td>
+      <td>0.000000</td>
+      <td>0</td>
+      <td>2</td>
+      <td>1000.0</td>
+      <td>201.802084</td>
+      <td>139.509787</td>
+      <td>0.000000</td>
+      <td>12</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3202.467416</td>
+      <td>0.909091</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>6442.945483</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.250000</td>
+      <td>4</td>
+      <td>0</td>
+      <td>7000.0</td>
+      <td>4103.032597</td>
+      <td>1072.340217</td>
+      <td>0.222222</td>
+      <td>12</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2495.148862</td>
+      <td>1.000000</td>
+      <td>773.17</td>
+      <td>773.17</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0</td>
+      <td>12</td>
+      <td>7500.0</td>
+      <td>622.066742</td>
+      <td>627.284787</td>
+      <td>0.000000</td>
+      <td>12</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1666.670542</td>
+      <td>0.636364</td>
+      <td>1499.00</td>
+      <td>1499.00</td>
+      <td>0.00</td>
+      <td>205.788017</td>
+      <td>0.083333</td>
+      <td>0.083333</td>
+      <td>0.000000</td>
+      <td>0.083333</td>
+      <td>1</td>
+      <td>1</td>
+      <td>7500.0</td>
+      <td>0.000000</td>
+      <td>864.206542</td>
+      <td>0.000000</td>
+      <td>12</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>817.714335</td>
+      <td>1.000000</td>
+      <td>16.00</td>
+      <td>16.00</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.083333</td>
+      <td>0.083333</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1200.0</td>
+      <td>678.334763</td>
+      <td>244.791237</td>
+      <td>0.000000</td>
+      <td>12</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>8945</th>
+      <td>28.493517</td>
+      <td>1.000000</td>
+      <td>291.12</td>
+      <td>0.00</td>
+      <td>291.12</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.833333</td>
+      <td>0.000000</td>
+      <td>0</td>
+      <td>6</td>
+      <td>1000.0</td>
+      <td>325.594462</td>
+      <td>48.886365</td>
+      <td>0.500000</td>
+      <td>6</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>8946</th>
+      <td>19.183215</td>
+      <td>1.000000</td>
+      <td>300.00</td>
+      <td>0.00</td>
+      <td>300.00</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.833333</td>
+      <td>0.000000</td>
+      <td>0</td>
+      <td>6</td>
+      <td>1000.0</td>
+      <td>275.861322</td>
+      <td>864.206542</td>
+      <td>0.000000</td>
+      <td>6</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>8947</th>
+      <td>23.398673</td>
+      <td>0.833333</td>
+      <td>144.40</td>
+      <td>0.00</td>
+      <td>144.40</td>
+      <td>0.000000</td>
+      <td>0.833333</td>
+      <td>0.000000</td>
+      <td>0.666667</td>
+      <td>0.000000</td>
+      <td>0</td>
+      <td>5</td>
+      <td>1000.0</td>
+      <td>81.270775</td>
+      <td>82.418369</td>
+      <td>0.250000</td>
+      <td>6</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>8948</th>
+      <td>13.457564</td>
+      <td>0.833333</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>36.558778</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.166667</td>
+      <td>2</td>
+      <td>0</td>
+      <td>500.0</td>
+      <td>52.549959</td>
+      <td>55.755628</td>
+      <td>0.250000</td>
+      <td>6</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>8949</th>
+      <td>372.708075</td>
+      <td>0.666667</td>
+      <td>1093.25</td>
+      <td>1093.25</td>
+      <td>0.00</td>
+      <td>127.040008</td>
+      <td>0.666667</td>
+      <td>0.666667</td>
+      <td>0.000000</td>
+      <td>0.333333</td>
+      <td>2</td>
+      <td>23</td>
+      <td>1200.0</td>
+      <td>63.165404</td>
+      <td>88.288956</td>
+      <td>0.000000</td>
+      <td>6</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+<p>8950 rows × 18 columns</p>
+</div>
+</div>
+</div>
+<p>Let’s view account distribution by <code>7</code> clusters</p>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Total account by cluster</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>cluster_counts <span class="op">=</span> data[<span class="st">"Cluster"</span>].value_counts()</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cluster_counts)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the pie chart</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>plt.pie(cluster_counts, labels<span class="op">=</span>cluster_counts.index, autopct<span class="op">=</span><span class="st">"</span><span class="sc">%1.1f%%</span><span class="st">"</span>, startangle<span class="op">=</span><span class="dv">140</span>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Account Distribution by Cluster"</span>)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cluster
+5    2841
+3    2046
+2    1267
+6    1187
+1     894
+4     629
+0      86
+Name: count, dtype: int64
+Cluster
+5    2841
+3    2046
+2    1267
+6    1187
+1     894
+4     629
+0      86
+Name: count, dtype: int64</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="Customer_segmentation_files/figure-html/cell-24-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="apply-principal-component-analysis-pca" class="level3">
+<h3 class="anchored" data-anchor-id="apply-principal-component-analysis-pca">Apply Principal Component Analysis (PCA)</h3>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>principal_components <span class="op">=</span> pca.fit_transform(scaled_data)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>pc_df <span class="op">=</span> pd.DataFrame(data<span class="op">=</span>principal_components, columns<span class="op">=</span>[<span class="st">"PC1"</span>, <span class="st">"PC2"</span>])</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>pc_df[<span class="st">"Cluster"</span>] <span class="op">=</span> clusters</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create DataFrames for the different cluster groups</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>pc_df_all <span class="op">=</span> pc_df.copy()</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>pc_df_2356 <span class="op">=</span> pc_df[pc_df[<span class="st">"Cluster"</span>].isin([<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">6</span>])].copy()</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>pc_df_014 <span class="op">=</span> pc_df[pc_df[<span class="st">"Cluster"</span>].isin([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">4</span>])].copy()</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the figure with GridSpec</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">12</span>))</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>gs <span class="op">=</span> fig.add_gridspec(<span class="dv">2</span>, <span class="dv">2</span>, height_ratios<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot for all clusters in the first row spanning both columns</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">0</span>, :])</span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"PC1"</span>, y<span class="op">=</span><span class="st">"PC2"</span>, hue<span class="op">=</span><span class="st">"Cluster"</span>, data<span class="op">=</span>pc_df_all,</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>    palette<span class="op">=</span>[<span class="st">"red"</span>, <span class="st">"green"</span>, <span class="st">"blue"</span>, <span class="st">"pink"</span>, <span class="st">"yellow"</span>, <span class="st">"gray"</span>, <span class="st">"purple"</span>, <span class="st">"black"</span>],</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">70</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, ax<span class="op">=</span>ax1</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">"All Clusters Visualization using PCA"</span>)</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a><span class="co">##ax1.legend(loc='center left', bbox_to_anchor=(1, 0.5))</span></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine limits for x and y axes from the first plot</span></span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>x_limits <span class="op">=</span> ax1.get_xlim()</span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>y_limits <span class="op">=</span> ax1.get_ylim()</span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot for clusters 2, 3, 5, and 6 in the second row, first column</span></span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">1</span>, <span class="dv">0</span>])</span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(</span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"PC1"</span>, y<span class="op">=</span><span class="st">"PC2"</span>, hue<span class="op">=</span><span class="st">"Cluster"</span>, data<span class="op">=</span>pc_df_2356,</span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a>    palette<span class="op">=</span>[<span class="st">"blue"</span>,<span class="st">"pink"</span>, <span class="st">"gray"</span>, <span class="st">"purple"</span>],</span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">70</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, ax<span class="op">=</span>ax2</span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">"Clusters 2, 3, 5, 6"</span>)</span>
+<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a>ax2.set_xlim(x_limits)</span>
+<span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a>ax2.set_ylim(y_limits)</span>
+<span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a><span class="co">##ax2.legend(loc='center left', bbox_to_anchor=(1, 0.5))</span></span>
+<span id="cb33-40"><a href="#cb33-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-41"><a href="#cb33-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot for clusters 0, 1, and 4 in the second row, second column</span></span>
+<span id="cb33-42"><a href="#cb33-42" aria-hidden="true" tabindex="-1"></a>ax3 <span class="op">=</span> fig.add_subplot(gs[<span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb33-43"><a href="#cb33-43" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(</span>
+<span id="cb33-44"><a href="#cb33-44" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"PC1"</span>, y<span class="op">=</span><span class="st">"PC2"</span>, hue<span class="op">=</span><span class="st">"Cluster"</span>, data<span class="op">=</span>pc_df_014,</span>
+<span id="cb33-45"><a href="#cb33-45" aria-hidden="true" tabindex="-1"></a>    palette<span class="op">=</span>[<span class="st">"red"</span>, <span class="st">"green"</span>, <span class="st">"yellow"</span>],</span>
+<span id="cb33-46"><a href="#cb33-46" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">70</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, ax<span class="op">=</span>ax3</span>
+<span id="cb33-47"><a href="#cb33-47" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-48"><a href="#cb33-48" aria-hidden="true" tabindex="-1"></a>ax3.set_title(<span class="st">"Clusters 0, 1, 4"</span>)</span>
+<span id="cb33-49"><a href="#cb33-49" aria-hidden="true" tabindex="-1"></a>ax3.set_xlim(x_limits)</span>
+<span id="cb33-50"><a href="#cb33-50" aria-hidden="true" tabindex="-1"></a>ax3.set_ylim(y_limits)</span>
+<span id="cb33-51"><a href="#cb33-51" aria-hidden="true" tabindex="-1"></a><span class="co">#ax3.legend(loc='center left', bbox_to_anchor=(1, 0.5))</span></span>
+<span id="cb33-52"><a href="#cb33-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-53"><a href="#cb33-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust layout to prevent overlap</span></span>
+<span id="cb33-54"><a href="#cb33-54" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb33-55"><a href="#cb33-55" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="Customer_segmentation_files/figure-html/cell-25-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="model-evaluation-and-conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="model-evaluation-and-conclusions">7. Model Evaluation and Conclusions</h2>
+<p>Evaluate the clustering result using silhouette score:</p>
+<div class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate silhouette score</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>sil_score <span class="op">=</span> silhouette_score(scaled_data, clusters)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Silhouette Score: </span><span class="sc">{</span>sil_score<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Silhouette Score: 0.21503808606365246
+Silhouette Score: 0.21503808606365246</code></pre>
+</div>
+</div>
+<p>A silhouette score of 0.215 suggests that the clusters might be overlapping or not distinctly separated and indicates room for improvement.</p>
+<section id="categorize-into-four-groups" class="level3">
+<h3 class="anchored" data-anchor-id="categorize-into-four-groups">Categorize into Four Groups</h3>
+<p>To analyze the cluster centers into four significant groups, we will examine various attributes and categorize the rows based on similarities and differences. Here is a detailed breakdown:</p>
+<ol type="1">
+<li><strong>High Spending and High Balance</strong>
+<ul>
+<li>This group has high balances and high spending on purchases, including both one-off and installment purchases. They also have high credit limits and good payment histories.</li>
+<li>Examples:
+<ul>
+<li><strong>Row 0</strong>: Balance of $4541.39, high purchases ($15777.31), and a substantial credit limit ($12493.02).</li>
+<li><strong>Row 2</strong>: Balance of $1828.40, significant purchases ($3009.46), and a high credit limit ($7047.42).</li>
+</ul></li>
+<li>These customers are actively using their credit and have significant balances. They are <strong><em>likely to be valuable clients due to their high engagement and spending</em></strong>.</li>
+</ul></li>
+<li><strong>High Balance but Low Spending</strong>
+<ul>
+<li>This group has high balances and credit limits but low purchase amounts and frequencies, indicating lower transaction activity.</li>
+<li>Examples:
+<ul>
+<li><strong>Row 1</strong>: Balance of $5033.10, but low purchases ($564.52) and high cash advance ($5153.57).</li>
+<li><strong>Row 5</strong>: Balance of $1580.74, with lower purchases ($268.43) and a relatively high cash advance ($760.33).</li>
+</ul></li>
+<li>These customers have high credit limits but are not utilizing them much. They may be <strong><em>less engaged or could be saving their credit for future use</em></strong>.</li>
+</ul></li>
+<li><strong>Low Balance and High Cash Advance</strong>
+<ul>
+<li>This group has lower balances but high cash advances with modest purchase amounts. They show a higher frequency of cash advances relative to purchases.</li>
+<li>Examples:
+<ul>
+<li><strong>Row 3</strong>: Balance of $799.44, with high cash advance ($206.95) and low purchase activity ($918.09).</li>
+<li><strong>Row 6</strong>: Balance of $103.59, with high cash advance ($301.36) and low purchases ($347.46).</li>
+</ul></li>
+<li>These customers frequently use cash advances despite having lower balances. They might be <strong><em>facing financial difficulties or prefer cash over credit</em></strong>.</li>
+</ul></li>
+<li><strong>Low Balance and Low Spending</strong>
+<ul>
+<li>This group has low balances and spending across all purchase categories, indicating minimal activity and expenditure.</li>
+<li>Examples:
+<ul>
+<li><strong>Row 6</strong>: Balance of $103.59, with minimal purchases ($347.46) and low credit limit ($3865.96).</li>
+<li><strong>Row 4</strong>: Balance of $866.15, with low purchases ($395.31) and a lower credit limit ($2468.23).
+<ul>
+<li>Additionally, the accounts in Row 4 have a tenure of 7.2, the lowest among all others. This suggests these customers have used their credit accounts for a shorter period compared to the rest.</li>
+</ul></li>
+</ul></li>
+<li>This group shows minimal engagement with their credit accounts. They have low balances and low spending, suggesting limited usage or disinterest. This group might <strong><em>include new accounts that have not fully explored the features and benefits of their credit accounts</em></strong>.</li>
+</ul></li>
+</ol>
+<p>This classification can help the company target different customer segments and personalize their financial products or interventions.</p>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
