@@ -29,5 +29,5 @@ The analysis identified four significant customer clusters:
 - **Cluster 3:** Low Balance, High Cash Advance
 - **Cluster 4:** Low Balance, Low Spending
 
-
+*Final report in Quarto Pub can be viewed [here](https://pmtam.quarto.pub/customer-segmentation-with-python/)*
 
