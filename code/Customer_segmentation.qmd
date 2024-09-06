@@ -1,0 +1,469 @@
+---
+title: Customer Segmentation with Python
+number-sections: false
+highlight-style: pygments
+format:
+  html:
+    fig-allign: center
+    toc: true
+    toc-depth: 2
+    code-fold: false
+    html-math-method: katex
+  pdf:
+    geometry:
+      - top=20mm
+      - left=20mm
+jupyter: python3
+---
+
+## 1. Understand the problem and Business Case
+
+In this project, we are provided with a dataset containing customer information from a bank over the past six months. The data includes variables such as transaction frequency, transaction amounts, tenure, and other relevant features.
+
+As data scientists, our task is to utilize artificial intelligence and machine learning techniques to classify customers into at least three distinct groups. The marketing team will use the results of this classification to optimize their marketing campaigns and strategies.
+
+![](images/Cust_seg2.jpg){fig-align="center" width="300"}
+
+## 2. Import libraries & Load data
+
+```{python}
+#| vscode: {languageId: python}
+# Data Manipulation
+import pandas as pd
+import numpy as np
+
+# Data Visualization
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Machine Learning
+from sklearn.preprocessing import StandardScaler, normalize
+from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
+from sklearn.metrics import silhouette_score
+
+# Other useful libraries
+import warnings
+warnings.filterwarnings("ignore")
+
+# For additional visualization (optional)
+import plotly.express as px
+import plotly.graph_objs as go
+
+# For display text as Markdown
+from IPython.display import display, Markdown
+
+# from jupyterthemes import jtplot
+# jtplot.style(theme = 'monokai', context = 'notebook', ticks = True, grid=False )
+
+# Set the display format for floating point numbers
+pd.options.display.float_format = '{:,.3f}'.format
+```
+
+```{python}
+#| vscode: {languageId: python}
+#| fig-allign: left
+# Read data
+
+data = pd.read_csv("../data/marketing_data.csv")
+data
+```
+
+```{python}
+#| vscode: {languageId: python}
+data.info()
+```
+
+| Field Name | Description |
+|--------------------------|----------------------------------------------|
+| CUSTID | Identification of Credit Card holder |
+| BALANCE | Balance amount left in customer's account to make purchases |
+| BALANCE_FREQUENCY | How frequently the Balance is updated, score between 0 and 1 (1 = frequently updated, 0 = not frequently updated) |
+| PURCHASES | Amount of purchases made from account |
+| ONEOFFPURCHASES | Maximum purchase amount done in one-go |
+| INSTALLMENTS_PURCHASES | Amount of purchase done in installment |
+| CASH_ADVANCE | Cash in advance given by the user |
+| PURCHASES_FREQUENCY | How frequently the Purchases are being made, score between 0 and 1 (1 = frequently purchased, 0 = not frequently purchased) |
+| ONEOFF_PURCHASES_FREQUENCY | How frequently Purchases are happening in one-go (1 = frequently purchased, 0 = not frequently purchased) |
+| PURCHASES_INSTALLMENTS_FREQUENCY | How frequently purchases in installments are being done (1 = frequently done, 0 = not frequently done) |
+| CASH_ADVANCE_FREQUENCY | How frequently the cash in advance being paid |
+| CASH_ADVANCE_TRX | Number of Transactions made with "Cash in Advance" |
+| PURCHASES_TRX | Number of purchase transactions made |
+| CREDIT_LIMIT | Limit of Credit Card for user |
+| PAYMENTS | Amount of Payment done by user |
+| MINIMUM_PAYMENTS | Minimum amount of payments made by user |
+| PRC_FULL_PAYMENT | Percent of full payment paid by user |
+| TENURE | Tenure of credit card service for user |
+
+## 3. Exploratory Data Analysis (EDA)
+
+Let's check the basic statistics and visualize some features:
+
+### Descriptive statistics
+
+```{python}
+#| vscode: {languageId: python}
+# Display basic statistics
+data.describe()
+```
+
+**Key Insights from Descriptive Statistics:**
+
+-   The mean balance of customers is approximately \$1,564.
+-   The balance frequency is updated frequently, with an average of around 0.9.
+-   The average purchase amount is about \$1,000.
+-   The mean one-off purchase amount is roughly \$600.
+-   The average purchases frequency is around 0.5.
+-   The average frequencies for one-off purchases, installment purchases, and cash advances are generally low.
+-   The average credit limit for customers is around \$4,500.
+-   The percentage of full payments made is 15%.
+-   The average tenure of customers is 11 years.
+
+```{python}
+#| vscode: {languageId: python}
+# Let's see if we have any missing data
+sns.heatmap(data.isnull(), yticklabels=False, cbar=False, cmap="Blues")
+```
+
+```{python}
+#| vscode: {languageId: python}
+# Check for missing values
+data.isnull().sum()
+```
+
+There are missing data in `MINIMUM_PAYMENTS` and `CREDIT_LIMIT`.
+
+### Distributions of numerical features
+
+```{python}
+#| vscode: {languageId: python}
+# Visualize distributions of numerical features
+data.hist(bins=20, figsize=(15, 10))
+plt.tight_layout()
+plt.show()
+```
+
+### Correlation matrix between features
+
+```{python}
+#| vscode: {languageId: python}
+# Correlation matrix
+plt.figure(figsize=(12, 8))
+data_numeric = data.drop(columns=["CUST_ID"])
+sns.heatmap(data_numeric.corr(), annot=True, fmt=".2f", cmap="coolwarm")
+plt.show()
+```
+
+The heatmap provides a visual representation of the correlation coefficients, with colors indicating the strength and direction of the correlations
+
+***Strong Positive Correlations:***
+
+-   `PURCHASES` and `ONEOFF_PURCHASES` (0.92): Indicates that one-off purchases are a major component of total purchases.
+
+-   `PURCHASES_INSTALLMENTS_FREQUENCY` and `PURCHASES_FREQUENCY` (0.86): Indicates that the frequency of installment purchases is closely related to the overall frequency of purchases.
+
+-   `CASH_ADVANCE` and `CASH_ADVANCE_TRX` (0.66): Indicates that the amount of cash advances is strongly related to the number of cash advance transactions.
+
+***Moderate Positive Correlations:***
+
+-   `CREDIT_LIMIT` and `BALANCE` (0.53): Suggests that higher credit limits are associated with higher balances.
+-   `PURCHASES` and `PURCHASES_TRX` (0.69): Indicates a moderate relationship between total purchases and the number of purchase transactions.
+-   `PAYMENTS` and `PURCHASES` (0.60): Indicates that higher payments are associated with higher purchase amounts
+
+***Strong Negative Correlations:***
+
+-   `PRC_FULL_PAYMENT` and `BALANCE` (-0.32): Indicates that a higher percentage of full payments is associated with lower balances.
+
+***Moderate Negative Correlations:***
+
+-   `CASH_ADVANCE_FREQUENCY` and `PURCHASES_INSTALLMENTS_FREQUENCY` (-0.31): Suggests that frequent cash advances are associated with less frequent installment purchases.
+
+### Analytical Points from EDA:
+
+**1. Customer Engagement:** The high mean balance (\$1,564) and frequent balance (average balance frequency of \~0.9) indicate active account management and regular transactions by customers.
+
+**2. Spending Behavior:** With an average purchase amount of \$1,000 and an average one-off purchase amount of \~\$600, customers seem to engage in both frequent smaller purchases and occasional larger one-off purchases.
+
+**3. Low Frequency Transactions:** The generally low average frequencies for one-off purchases, installment purchases, and cash advances suggest that while customers do make these types of transactions, they do so infrequently.
+
+**4. Credit Utilization:** The average credit limit of \$4,500 suggests that the bank extends a significant amount of credit to its customers. However, the actual usage and payment patterns (such as the 15% full payment rate) indicate varying levels of credit utilization and repayment behavior.
+
+**5. Financial Responsibility:** The relatively low percentage of full payments (15%) might indicate that a large proportion of customers are not paying off their balances in full each month, which could lead to higher interest income for the bank but also suggests potential financial strain on customers.
+
+**6. Customer Loyalty:** An average tenure of 11 years highlights a strong customer loyalty and long-term relationship with the bank, which is a positive indicator of customer satisfaction and retention.
+
+**7. Marketing Strategy Implications:** These insights can help the marketing team tailor their campaigns to different customer segments. For example, they could target customers with high balances and low payment rates with offers for balance transfer or debt consolidation products, or incentivize frequent small purchasers with rewards programs.
+
+## 4. Data Preprocessing
+
+Handle missing values and prepare the data for clustering:
+
+```{python}
+#| vscode: {languageId: python}
+# Drop non-numeric columns if necessary (e.g., CUST_ID)
+data = data.drop(columns=["CUST_ID"])
+```
+
+```{python}
+#| vscode: {languageId: python}
+# Fill missing values with mean
+data = data.fillna(data.mean())
+```
+
+```{python}
+#| vscode: {languageId: python}
+# Check if any missing value again
+data.isnull().sum()
+```
+
+```{python}
+#| vscode: {languageId: python}
+# Let's see if we have duplicated entries in the data
+data.duplicated().sum()
+```
+
+## 5. Feature Scalling
+
+Standardize the features before clustering:
+
+```{python}
+#| vscode: {languageId: python}
+# Standardize the data
+scaler = StandardScaler()
+scaled_data = scaler.fit_transform(data)
+```
+
+```{python}
+#| vscode: {languageId: python}
+scaled_data.shape
+```
+
+```{python}
+#| vscode: {languageId: python}
+scaled_data
+```
+
+::: callout-tip
+## Why do we need scaling data before clustering ?
+
+Scaling data before clustering is important because many clustering algorithms rely on distance measures, such as Euclidean distance, to determine the similarity between data points. If the data is not scaled, features with larger ranges can dominate the distance calculations, potentially skewing the results.
+
+Common methods for scaling data include:
+
+-   **Standardization**: Transforming the data to have a mean of zero and a standard deviation of one.
+
+-   **Normalization**: Scaling the data to a specific range, usually \[0, 1\] or \[-1, 1\].
+
+By scaling the data, we ensure that the clustering results are more reliable and meaningful.
+:::
+
+## 6. Model Training
+
+### Apply K-Means clustering
+
+Apply K-Means clustering and determine the optimal number of clusters
+
+```{python}
+#| vscode: {languageId: python}
+# Determine the optimal number of clusters using the elbow method
+wcss = []
+for i in range(1, 20):
+    kmeans = KMeans(
+        n_clusters=i, init="k-means++", max_iter=300, n_init=10, random_state=42
+    )
+    kmeans.fit(scaled_data)
+    wcss.append(kmeans.inertia_)
+
+# Plot the elbow method graph
+plt.figure(figsize=(10, 5))
+plt.plot(wcss, marker="o")
+plt.title("Elbow Method")
+plt.xlabel("Number of clusters")
+plt.ylabel("WCSS")
+plt.show()
+```
+
+Choose the optimal number of clusters (e.g., 7 based on the elbow method) and fit the K-Means model:
+
+```{python}
+#| vscode: {languageId: python}
+# Fit K-Means model
+optimal_clusters = 7  # Based on the elbow method
+kmeans = KMeans(
+    n_clusters=optimal_clusters,
+    init="k-means++",
+    max_iter=300,
+    n_init=10,
+    random_state=42,
+)
+
+kmeans.fit(scaled_data)
+kmeans
+```
+
+```{python}
+#| vscode: {languageId: python}
+# Cluster_center shape
+kmeans.cluster_centers_.shape
+```
+
+```{python}
+#| vscode: {languageId: python}
+# Cluster_center scaled values
+cluster_centers = pd.DataFrame(data=kmeans.cluster_centers_, columns=[data.columns])
+cluster_centers
+```
+
+**Cluster Centers**
+
+```{python}
+#| vscode: {languageId: python}
+# In order to understand what these numbers mean, let's perform inverse transformation
+cluster_centers = scaler.inverse_transform(cluster_centers)
+cluster_centers = pd.DataFrame(data=cluster_centers, columns=[data.columns])
+cluster_centers
+```
+
+**Classify data into clusters**
+
+```{python}
+#| vscode: {languageId: python}
+markdown_text = f"Our account data is now classified into `{optimal_clusters}` clusters"
+Markdown(markdown_text)
+```
+
+```{python}
+#| vscode: {languageId: python}
+# Predict cluster from scaled_data
+clusters = kmeans.fit_predict(scaled_data)
+
+# Add the cluster labels to the original data
+data["Cluster"] = clusters
+data
+```
+
+Let's view account distribution by `7` clusters
+
+```{python}
+#| vscode: {languageId: python}
+# Total account by cluster
+cluster_counts = data["Cluster"].value_counts()
+print(cluster_counts)
+
+# Plot the pie chart
+plt.figure(figsize=(8, 5))
+plt.pie(cluster_counts, labels=cluster_counts.index, autopct="%1.1f%%", startangle=140)
+plt.title("Account Distribution by Cluster")
+plt.show()
+```
+
+### Apply Principal Component Analysis (PCA)
+
+```{python}
+#| vscode: {languageId: python}
+# Apply PCA
+pca = PCA(n_components=2)
+principal_components = pca.fit_transform(scaled_data)
+pc_df = pd.DataFrame(data=principal_components, columns=["PC1", "PC2"])
+pc_df["Cluster"] = clusters
+
+# Create DataFrames for the different cluster groups
+pc_df_all = pc_df.copy()
+pc_df_2356 = pc_df[pc_df["Cluster"].isin([2, 3, 5, 6])].copy()
+pc_df_014 = pc_df[pc_df["Cluster"].isin([0, 1, 4])].copy()
+
+# Set up the figure with GridSpec
+fig = plt.figure(figsize=(12, 12))
+gs = fig.add_gridspec(2, 2, height_ratios=[1, 1])
+
+# Plot for all clusters in the first row spanning both columns
+ax1 = fig.add_subplot(gs[0, :])
+sns.scatterplot(
+    x="PC1", y="PC2", hue="Cluster", data=pc_df_all,
+    palette=["red", "green", "blue", "pink", "yellow", "gray", "purple", "black"],
+    s=70, alpha=0.6, ax=ax1
+)
+ax1.set_title("All Clusters Visualization using PCA")
+##ax1.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+# Determine limits for x and y axes from the first plot
+x_limits = ax1.get_xlim()
+y_limits = ax1.get_ylim()
+
+# Plot for clusters 2, 3, 5, and 6 in the second row, first column
+ax2 = fig.add_subplot(gs[1, 0])
+sns.scatterplot(
+    x="PC1", y="PC2", hue="Cluster", data=pc_df_2356,
+    palette=["blue","pink", "gray", "purple"],
+    s=70, alpha=0.6, ax=ax2
+)
+ax2.set_title("Clusters 2, 3, 5, 6")
+ax2.set_xlim(x_limits)
+ax2.set_ylim(y_limits)
+##ax2.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+# Plot for clusters 0, 1, and 4 in the second row, second column
+ax3 = fig.add_subplot(gs[1, 1])
+sns.scatterplot(
+    x="PC1", y="PC2", hue="Cluster", data=pc_df_014,
+    palette=["red", "green", "yellow"],
+    s=70, alpha=0.6, ax=ax3
+)
+ax3.set_title("Clusters 0, 1, 4")
+ax3.set_xlim(x_limits)
+ax3.set_ylim(y_limits)
+#ax3.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+# Adjust layout to prevent overlap
+plt.tight_layout()
+plt.show()
+```
+
+## 7. Model Evaluation and Conclusions
+
+Evaluate the clustering result using silhouette score:
+
+```{python}
+#| vscode: {languageId: python}
+# Calculate silhouette score
+sil_score = silhouette_score(scaled_data, clusters)
+print(f"Silhouette Score: {sil_score}")
+```
+
+::: callout-important
+## Sihoutte score
+
+A silhouette score of 0.215 ***suggests that the clusters might be overlapping or not distinctly separated and indicates room for improvement***.
+:::
+
+### Conclusion: The Four Significant Groups
+
+To analyze the cluster centers into four significant groups, we will examine various attributes and categorize the rows based on similarities and differences. Here is a detailed breakdown:
+
+1.  **High Spending and High Balance**
+    -   This group has high balances and high spending on purchases, including both one-off and installment purchases. They also have high credit limits and good payment histories.
+    -   Examples:
+        -   **Row 0**: Balance of \$4541.39, high purchases (\$15777.31), and a substantial credit limit (\$12493.02).
+        -   **Row 2**: Balance of \$1828.40, significant purchases (\$3009.46), and a high credit limit (\$7047.42).
+    -   These customers are actively using their credit and have significant balances. They are ***likely to be valuable clients due to their high engagement and spending***.
+2.  **High Balance but Low Spending**
+    -   This group has high balances and credit limits but low purchase amounts and frequencies, indicating lower transaction activity.
+    -   Examples:
+        -   **Row 1**: Balance of \$5033.10, but low purchases (\$564.52) and high cash advance (\$5153.57).
+        -   **Row 5**: Balance of \$1580.74, with lower purchases (\$268.43) and a relatively high cash advance (\$760.33).
+    -   These customers have high credit limits but are not utilizing them much. They may be ***less engaged or could be saving their credit for future use***.
+3.  **Low Balance and High Cash Advance**
+    -   This group has lower balances but high cash advances with modest purchase amounts. They show a higher frequency of cash advances relative to purchases.
+    -   Examples:
+        -   **Row 3**: Balance of \$799.44, with high cash advance (\$206.95) and low purchase activity (\$918.09).
+        -   **Row 6**: Balance of \$103.59, with high cash advance (\$301.36) and low purchases (\$347.46).
+    -   These customers frequently use cash advances despite having lower balances. They might be ***facing financial difficulties or prefer cash over credit***.
+4.  **Low Balance and Low Spending**
+    -   This group has low balances and spending across all purchase categories, indicating minimal activity and expenditure.
+    -   Examples:
+        -   **Row 6**: Balance of \$103.59, with minimal purchases (\$347.46) and low credit limit (\$3865.96).
+        -   **Row 4**: Balance of \$866.15, with low purchases (\$395.31) and a lower credit limit (\$2468.23).
+            -   Additionally, the accounts in Row 4 have a tenure of 7.2, the lowest among all others. This suggests these customers have used their credit accounts for a shorter period compared to the rest.
+    -   This group shows minimal engagement with their credit accounts. They have low balances and low spending, suggesting limited usage or disinterest. This group might ***include new accounts that have not fully explored the features and benefits of their credit accounts***.
+
+This classification can help the company target different customer segments and personalize their financial products or interventions.

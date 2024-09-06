@@ -1,0 +1,8 @@
+- source: Customer_segmentation.qmd
+  quarto-pub:
+    - id: 3dfc6840-e94b-4c75-9610-f3adf95f4f34
+      url: 'https://pmtam.quarto.pub/customer-segmentation-with-python'
+- source: customer_segmentation.qmd
+  quarto-pub:
+    - id: 3f06a5f7-24d4-4091-b00c-5ebb6e11704f
+      url: 'https://pmtam.quarto.pub/customer-segmentation-with-python-feae'
