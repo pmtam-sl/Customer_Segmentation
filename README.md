@@ -2,13 +2,24 @@
 
 ## Overview
 
-This project uses machine learning techniques to perform customer segmentation, helping marketing team at a bank identify distinct customer groups based on customer's transaction frequency, transaction amounts, tenure, and other relevant features. The goal is to enable more targeted marketing strategies and campaigns.
+This project applies machine learning techniques to perform customer segmentation, helping the marketing team at a bank identify distinct customer groups based on transaction frequency, transaction amounts, tenure, and other relevant features. The goal is to enable more targeted marketing strategies and campaigns.
 
 ## Dataset
 
-The dataset used in this project contains anonymized customer records over the past six months. Refer to data description in the project document.
+The dataset contains anonymized customer records over the past six months. Refer to the project document for detailed data descriptions.
 
 ## Methodology
+
+1. **Exploratory Data Analysis (EDA)**: Understand the data distribution and identify patterns.
+2. **Data Preprocessing**: Clean the data to remove any inconsistencies or missing values.
+3. **Feature Scaling**: Standardize the features to ensure they are on the same scale before clustering.
+4. **Model Training**:
+    - Apply **K-Means clustering** to segment customers.
+    - Use the **Elbow method** to determine the optimal number of clusters.
+    - Visualize the clusters using **Principal Component Analysis (PCA)**.
+5. **Model Evaluation and Conclusion**:
+    - Evaluate the clustering result using the **Silhouette score**.
+
 
 1. Exploratory Data Analysis
 2. Data Preprocessing: Clean data.
@@ -21,12 +32,12 @@ The dataset used in this project contains anonymized customer records over the p
 
 ## Results
 
-Identified four significant clusters:
+The analysis identified four significant customer clusters:
 
-- **Cluster 1:** High Spending, High Balance.
-- **Cluster 2:** High Balance, Low Spending.
+- **Cluster 1:** High Spending, High Balance
+- **Cluster 2:** High Balance, Low Spending
 - **Cluster 3:** Low Balance, High Cash Advance
-- **Cluster 4:** Low Balance, Low Spending.
+- **Cluster 4:** Low Balance, Low Spending
 
 
 
