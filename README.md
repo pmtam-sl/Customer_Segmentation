@@ -20,16 +20,6 @@ The dataset contains anonymized customer records over the past six months. Refer
 5. **Model Evaluation and Conclusion**:
     - Evaluate the clustering result using the **Silhouette score**.
 
-
-1. Exploratory Data Analysis
-2. Data Preprocessing: Clean data.
-3. Feature Scalling: Standardize the features before clustering
-4. Model Training: 
-    - Apply K-Means clustering and determine the optimal number of clusters using Elbow method
-    - Visualise cluster using PCA
-5. Model Evaluation and Conclustion
-    - Evaluate clustering result using silhouette score
-
 ## Results
 
 The analysis identified four significant customer clusters:
