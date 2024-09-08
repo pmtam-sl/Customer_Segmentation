@@ -91,7 +91,7 @@ target/
 .ipynb_checkpoints
 
 # HTML generated files
-_files/
+*_files/
 
 # IPython
 profile_default/
