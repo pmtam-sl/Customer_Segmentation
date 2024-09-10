@@ -93,6 +93,12 @@ target/
 # HTML generated files
 *_files/
 
+# Quarto
+_publish.yml
+
+# Git
+.gitignore
+
 # IPython
 profile_default/
 ipython_config.py
