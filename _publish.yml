@@ -1,4 +1,0 @@
-- source: Customer_segmentation.qmd
-  quarto-pub:
-    - id: 3dfc6840-e94b-4c75-9610-f3adf95f4f34
-      url: 'https://pmtam.quarto.pub/customer-segmentation-with-python'
